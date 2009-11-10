@@ -1,0 +1,21 @@
+<Addin id="NoteStatisticsAddin"
+	namespace="Tomboy"
+	name="NoteStatistics"
+	author="Eitan Isaacson <eitan@monotonous.org>"
+        description="Gives basic statistics about your note, like word and line counts."
+	category="Tools"
+	defaultEnabled="false"
+	version="0.1">
+
+	<Runtime>
+		<Import assembly="NoteStatistics.dll" />
+	</Runtime>
+
+	<Dependencies>
+		<Addin id="Tomboy" version="0.10" />
+	</Dependencies>
+
+	<Extension path="/Tomboy/NoteAddins">
+		<NoteAddin type="Tomboy.NoteStatistics.NoteStatisticsAddin" />
+	</Extension>
+</Addin>

@@ -1,0 +1,7 @@
+Tomboy.exe
+Tomboy.exe.config
+*.pidb
+*.userprefs
+*.usertasks
+*.dll
+*.dll.mdb
