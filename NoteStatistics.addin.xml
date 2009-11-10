@@ -1,8 +1,8 @@
 <Addin id="NoteStatisticsAddin"
 	namespace="Tomboy"
-	name="NoteStatistics"
-	author="Eitan Isaacson <eitan@monotonous.org>"
-        description="Gives basic statistics about your note, like word and line counts."
+	name="Note Statistics"
+	author="Eitan Isaacson"
+    description="Gives basic statistics about your note, like word and line count."
 	category="Tools"
 	defaultEnabled="false"
 	version="0.1">
