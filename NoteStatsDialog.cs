@@ -49,8 +49,12 @@ namespace Tomboy.NoteStatistics
 			noteCharsNoSpaces.Text = stats.CharsWithoutSpaces.ToString();
 			
 			if (note.Buffer.Selection != null)
-			{
-				stats = GetStatistics (note.Buffer.Selection);
+			{	
+				TextIter start;
+				TextIter end;
+				note.Buffer.GetSelectionBounds(out start, out end);
+				
+				stats = GetStatistics (start, end);
 				
 				selLines.Text = stats.Lines.ToString();
 				selWords.Text = stats.Words.ToString();
@@ -78,9 +82,11 @@ namespace Tomboy.NoteStatistics
 			selCharsNoSpaces.Sensitive = sensitive;
 		}
 		
-		private StringStatistics GetStatistics (string s)
+		private StringStatistics GetStatistics (TextIter start, TextIter end)
 		{
 			StringStatistics stats = new StringStatistics();
+			
+			string s = note.Buffer.GetText(start, end, false);
 			
 			stats.Words = Regex.Matches(s, @"[^\s•]+").Count;
 			stats.Lines = Regex.Matches(s, @"^.+", RegexOptions.Multiline).Count;
@@ -92,7 +98,7 @@ namespace Tomboy.NoteStatistics
 		
 		private StringStatistics GetStatistics ()
 		{
-			return GetStatistics (note.Buffer.Text);
+			return GetStatistics (note.Buffer.StartIter, note.Buffer.EndIter);
 		}
 		
 		private void SetTitle ()
