@@ -291,7 +291,7 @@ namespace Tomboy.NoteStatistics {
                 this.Child.ShowAll();
             }
             this.DefaultWidth = 400;
-            this.DefaultHeight = 300;
+            this.DefaultHeight = 251;
             this.Show();
             this.Response += new Gtk.ResponseHandler(this.OnResponse);
         }

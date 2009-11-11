@@ -59,6 +59,11 @@ namespace Tomboy.NoteStatistics
 				
 				SetSelectionColumnSensitive (true);
 			} else {
+				selLines.Text = "0";
+				selWords.Text = "0";
+				selCharsSpaces.Text = "0";
+				selCharsNoSpaces.Text = "0";
+				
 				SetSelectionColumnSensitive (false);
 			}
 				

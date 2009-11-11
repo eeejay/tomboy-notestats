@@ -8,7 +8,7 @@
     <widget-library name="../../../../../usr/lib/tomboy/Tomboy.exe" />
     <widget-library name="../NoteStatistics.dll" internal="true" />
   </import>
-  <widget class="Gtk.Dialog" id="Tomboy.NoteStatistics.NoteStatsDialog" design-size="400 300">
+  <widget class="Gtk.Dialog" id="Tomboy.NoteStatistics.NoteStatsDialog" design-size="400 251">
     <property name="MemberName" />
     <property name="Title" translatable="yes">Note Statistics</property>
     <property name="WindowPosition">CenterOnParent</property>
