@@ -32,6 +32,22 @@ namespace Tomboy.NoteStatistics
 			public int Words;
 			public int CharsWithSpaces;
 			public int CharsWithoutSpaces;
+			
+			public StringStatistics (int lines, int words, int chars_with_spaces, int chars_without_spaces)
+			{
+				Lines = lines;
+				Words = words;
+				CharsWithSpaces = chars_with_spaces;
+				CharsWithoutSpaces = chars_without_spaces;
+			}
+			
+			public static StringStatistics operator -(StringStatistics stats1, StringStatistics stats2)
+			{
+				return new StringStatistics (stats1.Lines - stats2.Lines, 
+				                             stats1.Words - stats2.Words,
+				                             stats1.CharsWithSpaces - stats2.CharsWithSpaces,
+				                             stats1.CharsWithoutSpaces - stats2.CharsWithoutSpaces);
+			}
 		}
 		
 		protected virtual void OnResponse (object o, Gtk.ResponseArgs args)
@@ -40,8 +56,8 @@ namespace Tomboy.NoteStatistics
 		}
 		
 		private void Refresh ()
-		{
-			StringStatistics stats = GetStatistics ();
+		{	
+			StringStatistics stats = GetStatistics (countStrikeout.Active);
 			
 			noteLines.Text = stats.Lines.ToString();
 			noteWords.Text = stats.Words.ToString();
@@ -54,7 +70,7 @@ namespace Tomboy.NoteStatistics
 				TextIter end;
 				note.Buffer.GetSelectionBounds(out start, out end);
 				
-				stats = GetStatistics (start, end);
+				stats = GetStatistics (start, end, countStrikeout.Active);
 				
 				selLines.Text = stats.Lines.ToString();
 				selWords.Text = stats.Words.ToString();
@@ -82,23 +98,54 @@ namespace Tomboy.NoteStatistics
 			selCharsNoSpaces.Sensitive = sensitive;
 		}
 		
-		private StringStatistics GetStatistics (TextIter start, TextIter end)
+		private StringStatistics GetStatistics (TextIter start, TextIter end, bool include_strikethrough)
+		{	
+			StringStatistics stats = GetTextStatistics (note.Buffer.GetText(start, end, false));
+			
+			if (!include_strikethrough)
+			{
+				TextTagEnumerator enumerator =
+					new TextTagEnumerator (note.Buffer, "strikethrough");
+				foreach (TextRange range in enumerator) {
+					TextIter strikethrough_start = range.Start;
+					TextIter strikethrough_end = range.End;
+					
+					if (!strikethrough_start.InRange (start, end))
+						strikethrough_start = start;
+					
+					if (!strikethrough_end.InRange (start, end))
+						strikethrough_end = end;
+					
+					if (strikethrough_end.Equal(end) && strikethrough_start.Equal(start))
+						continue;
+					
+					StringStatistics strikethrough_stats = 
+						GetTextStatistics (note.Buffer.GetText(strikethrough_start,
+						                                       strikethrough_end, 
+						                                       false));
+					
+					stats -= strikethrough_stats;
+					
+				}
+			}
+			return stats;
+		}
+		
+		private StringStatistics GetStatistics (bool include_strikethrough)
+		{
+			return GetStatistics (note.Buffer.StartIter, note.Buffer.EndIter, include_strikethrough);
+		}
+		
+		private StringStatistics GetTextStatistics (string s)
 		{
 			StringStatistics stats = new StringStatistics();
-			
-			string s = note.Buffer.GetText(start, end, false);
 			
 			stats.Words = Regex.Matches(s, @"[^\s•]+").Count;
 			stats.Lines = Regex.Matches(s, @"^.+", RegexOptions.Multiline).Count;
 			stats.CharsWithoutSpaces = Regex.Matches(s, @"[^\s•]").Count;
 			stats.CharsWithSpaces = Regex.Matches(s, @"[^•]").Count;
+			
 			return stats;
-
-		}
-		
-		private StringStatistics GetStatistics ()
-		{
-			return GetStatistics (note.Buffer.StartIter, note.Buffer.EndIter);
 		}
 		
 		private void SetTitle ()
@@ -137,6 +184,11 @@ namespace Tomboy.NoteStatistics
 		void OnTextChanged(object sender, EventArgs e)
 		{
 			Refresh ();
+		}
+
+		protected virtual void OnStrikeoutToggled (object sender, System.EventArgs e)
+		{
+			Refresh();
 		}
 	}
 }

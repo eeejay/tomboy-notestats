@@ -47,6 +47,8 @@ namespace Tomboy.NoteStatistics {
         
         private Gtk.Label selWords;
         
+        private Gtk.CheckButton countStrikeout;
+        
         private Gtk.Button buttonCancel;
         
         protected virtual void Build() {
@@ -264,17 +266,30 @@ namespace Tomboy.NoteStatistics {
             w17.Position = 1;
             w17.Expand = false;
             w17.Fill = false;
-            w1.Add(this.vbox2);
-            Gtk.Box.BoxChild w18 = ((Gtk.Box.BoxChild)(w1[this.vbox2]));
-            w18.Position = 0;
+            // Container child vbox2.Gtk.Box+BoxChild
+            this.countStrikeout = new Gtk.CheckButton();
+            this.countStrikeout.CanFocus = true;
+            this.countStrikeout.Name = "countStrikeout";
+            this.countStrikeout.Label = Mono.Unix.Catalog.GetString("Include striked out text");
+            this.countStrikeout.Active = true;
+            this.countStrikeout.DrawIndicator = true;
+            this.countStrikeout.UseUnderline = true;
+            this.vbox2.Add(this.countStrikeout);
+            Gtk.Box.BoxChild w18 = ((Gtk.Box.BoxChild)(this.vbox2[this.countStrikeout]));
+            w18.Position = 2;
             w18.Expand = false;
             w18.Fill = false;
+            w1.Add(this.vbox2);
+            Gtk.Box.BoxChild w19 = ((Gtk.Box.BoxChild)(w1[this.vbox2]));
+            w19.Position = 0;
+            w19.Expand = false;
+            w19.Fill = false;
             // Internal child Tomboy.NoteStatistics.NoteStatsDialog.ActionArea
-            Gtk.HButtonBox w19 = this.ActionArea;
-            w19.Name = "dialog1_ActionArea";
-            w19.Spacing = 6;
-            w19.BorderWidth = ((uint)(5));
-            w19.LayoutStyle = ((Gtk.ButtonBoxStyle)(4));
+            Gtk.HButtonBox w20 = this.ActionArea;
+            w20.Name = "dialog1_ActionArea";
+            w20.Spacing = 6;
+            w20.BorderWidth = ((uint)(5));
+            w20.LayoutStyle = ((Gtk.ButtonBoxStyle)(4));
             // Container child dialog1_ActionArea.Gtk.ButtonBox+ButtonBoxChild
             this.buttonCancel = new Gtk.Button();
             this.buttonCancel.CanDefault = true;
@@ -284,16 +299,17 @@ namespace Tomboy.NoteStatistics {
             this.buttonCancel.UseUnderline = true;
             this.buttonCancel.Label = "gtk-close";
             this.AddActionWidget(this.buttonCancel, -7);
-            Gtk.ButtonBox.ButtonBoxChild w20 = ((Gtk.ButtonBox.ButtonBoxChild)(w19[this.buttonCancel]));
-            w20.Expand = false;
-            w20.Fill = false;
+            Gtk.ButtonBox.ButtonBoxChild w21 = ((Gtk.ButtonBox.ButtonBoxChild)(w20[this.buttonCancel]));
+            w21.Expand = false;
+            w21.Fill = false;
             if ((this.Child != null)) {
                 this.Child.ShowAll();
             }
             this.DefaultWidth = 400;
-            this.DefaultHeight = 251;
+            this.DefaultHeight = 281;
             this.Show();
             this.Response += new Gtk.ResponseHandler(this.OnResponse);
+            this.countStrikeout.Toggled += new System.EventHandler(this.OnStrikeoutToggled);
         }
     }
 }

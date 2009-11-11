@@ -8,7 +8,7 @@
     <widget-library name="../../../../../usr/lib/tomboy/Tomboy.exe" />
     <widget-library name="../NoteStatistics.dll" internal="true" />
   </import>
-  <widget class="Gtk.Dialog" id="Tomboy.NoteStatistics.NoteStatsDialog" design-size="400 251">
+  <widget class="Gtk.Dialog" id="Tomboy.NoteStatistics.NoteStatsDialog" design-size="400 281">
     <property name="MemberName" />
     <property name="Title" translatable="yes">Note Statistics</property>
     <property name="WindowPosition">CenterOnParent</property>
@@ -356,6 +356,24 @@
               </widget>
               <packing>
                 <property name="Position">1</property>
+                <property name="AutoSize">True</property>
+                <property name="Expand">False</property>
+                <property name="Fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.CheckButton" id="countStrikeout">
+                <property name="MemberName" />
+                <property name="CanFocus">True</property>
+                <property name="Label" translatable="yes">Include striked out text</property>
+                <property name="Active">True</property>
+                <property name="DrawIndicator">True</property>
+                <property name="HasLabel">True</property>
+                <property name="UseUnderline">True</property>
+                <signal name="Toggled" handler="OnStrikeoutToggled" />
+              </widget>
+              <packing>
+                <property name="Position">2</property>
                 <property name="AutoSize">True</property>
                 <property name="Expand">False</property>
                 <property name="Fill">False</property>
