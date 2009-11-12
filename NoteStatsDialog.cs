@@ -100,35 +100,42 @@ namespace Tomboy.NoteStatistics
 		
 		private StringStatistics GetStatistics (TextIter start, TextIter end, bool include_strikethrough)
 		{	
-			StringStatistics stats = GetTextStatistics (note.Buffer.GetText(start, end, false));
-			
-			if (!include_strikethrough)
+			string str = "";
+						
+			if (include_strikethrough)
+			{
+				str = note.Buffer.GetText(start, end, false);
+			} else
 			{
 				TextTagEnumerator enumerator =
 					new TextTagEnumerator (note.Buffer, "strikethrough");
+				
+				TextIter splice_start = start;
+				TextIter splice_end = end;
+				string splice = "";
+					
 				foreach (TextRange range in enumerator) {
-					TextIter strikethrough_start = range.Start;
-					TextIter strikethrough_end = range.End;
+					if (range.Start.Offset > end.Offset)
+						break;
 					
-					if (!strikethrough_start.InRange (start, end))
-						strikethrough_start = start;
-					
-					if (!strikethrough_end.InRange (start, end))
-						strikethrough_end = end;
-					
-					if (strikethrough_end.Equal(end) && strikethrough_start.Equal(start))
+					if (range.End.Offset < start.Offset)
 						continue;
 					
-					StringStatistics strikethrough_stats = 
-						GetTextStatistics (note.Buffer.GetText(strikethrough_start,
-						                                       strikethrough_end, 
-						                                       false));
+					str += splice;
 					
-					stats -= strikethrough_stats;
+					if (range.Start.InRange (splice_start, splice_end))
+					    splice = splice_start.GetVisibleText (range.Start);
 					
-				}
+					
+					if (!range.End.InRange (splice_start, splice_end))
+						splice_start = splice_end;
+					else
+						splice_start = range.End;
+				}				
+				str += splice;
+				str += splice_start.GetVisibleText (splice_end);
 			}
-			return stats;
+			return GetTextStatistics (str);
 		}
 		
 		private StringStatistics GetStatistics (bool include_strikethrough)
