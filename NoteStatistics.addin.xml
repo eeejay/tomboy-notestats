@@ -5,7 +5,7 @@
     description="Gives basic statistics about your note, like word and line count."
 	category="Tools"
 	defaultEnabled="false"
-	version="0.1">
+	version="0.2">
 
 	<Runtime>
 		<Import assembly="NoteStatistics.dll" />

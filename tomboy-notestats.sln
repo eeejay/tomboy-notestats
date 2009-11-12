@@ -19,7 +19,7 @@ Global
 		StartupItem = tomboy-notestats.csproj
 		Policies = $0
 		$0.StandardHeader = $1
-		$1.inheritsSet = LGPLv2License
+		$1.inheritsSet = MITX11License
 		$0.TextStylePolicy = $2
 		$2.FileWidth = 120
 		$2.TabWidth = 4
