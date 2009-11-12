@@ -25,6 +25,7 @@ namespace Tomboy.NoteStatistics
 	public partial class NoteStatsDialog : Gtk.Dialog
 	{
 		private Note note;
+		private bool needs_refresh;
 		
 		private struct StringStatistics
 		{
@@ -170,9 +171,23 @@ namespace Tomboy.NoteStatistics
 			
 			Refresh();
 			
+			needs_refresh = false;
+			
 			note.Buffer.Changed += OnTextChanged;
 			note.Buffer.MarkSet += OnMarkSet;
 			note.Renamed += OnRenamed;
+			
+			GLib.Timeout.Add (500, OnAutoRefresh);
+		}
+		
+		bool OnAutoRefresh ()
+		{
+			if (needs_refresh)
+				Refresh();
+			
+			needs_refresh = false;
+			
+			return IsRealized;
 		}
 
 		void OnRenamed(Note sender, string old_title)
@@ -184,13 +199,13 @@ namespace Tomboy.NoteStatistics
 		{
 			if (args.Mark.Name == "insert" || 
 			    args.Mark.Name == "selection_bound")
-				Refresh ();
+				needs_refresh = true;
 		}
 
 
 		void OnTextChanged(object sender, EventArgs e)
 		{
-			Refresh ();
+			needs_refresh = true;
 		}
 
 		protected virtual void OnStrikeoutToggled (object sender, System.EventArgs e)
