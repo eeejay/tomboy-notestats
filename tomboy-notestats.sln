@@ -20,5 +20,12 @@ Global
 		Policies = $0
 		$0.StandardHeader = $1
 		$1.inheritsSet = LGPLv2License
+		$0.TextStylePolicy = $2
+		$2.FileWidth = 120
+		$2.TabWidth = 4
+		$2.TabsToSpaces = False
+		$2.NoTabsAfterNonTabs = False
+		$2.RemoveTrailingWhitespace = True
+		$2.EolMarker = Native
 	EndGlobalSection
 EndGlobal
